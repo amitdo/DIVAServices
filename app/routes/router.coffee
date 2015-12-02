@@ -26,12 +26,13 @@ router.post '/upload', (req, res) ->
     Upload.uploadUrl req.body.url, (err,result) ->
       res.json {md5: result.md5}
 
+router.post '/iif', (req,res,next) ->
+  
+
 # Set up the routing for POST requests
 router.post '*', (req, res, next) ->
   postHandler.handleRequest req, (err, response) ->
     sendResponse res, err, response
-
-
 
 router.get '/image/:md5', (req,res) ->
   ImageHelper.imageExists req.params.md5, (err, response) ->
