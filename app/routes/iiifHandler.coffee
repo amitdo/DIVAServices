@@ -12,7 +12,7 @@ Statistics          = require '../statistics/statistics'
 
 
 #Expose postHandler
-postHandler = exports = module.exports = class PostHandler
+iiifHandler = exports = module.exports = class IiifHandler
 
   constructor: () ->
     @queueHandler = new QueueHandler()
@@ -24,8 +24,15 @@ postHandler = exports = module.exports = class PostHandler
 # `params`
 #   *req* the incoming request
   handleRequest: (req, cb) ->
-#If mean-execution time < 60s directly execute
-    if (Statistics.getMeanExecutionTime(req.originalUrl) < 60)
-      @queueHandler.executeRequestImmediately(req,cb)
-    else
-      @queueHandler.addRequestToQueue(req,cb)
+    #print stats about the manifest
+    manifesto.loadManifest(req.body.iiif).then (manifest) ->
+      m = manifesto.create(manifest)
+      m.getSequences()
+      sequence = m.getSequenceByIndex(0)
+      canvases = sequence.getCanvases()
+      #logger.log 'info', "canvas: " + JSON.stringify(m.getCanvases())
+      #logger.log 'info', "canvases: " + canvases
+      return
+
+    cb null,{"ok"}
+

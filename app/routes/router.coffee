@@ -10,12 +10,15 @@
 router      = require('express').Router()
 GetHandler  = require './getHandler'
 PostHandler = require './postHandler'
+IiifHandler  = require './iiifHandler'
 logger      = require '../logging/logger'
 Upload      = require '../upload/upload'
 ImageHelper = require '../helper/imageHelper'
 
+
 getHandler = new GetHandler()
 postHandler = new PostHandler()
+iiifHandler = new IiifHandler()
 
 # Set up special route for image uploading
 router.post '/upload', (req, res) ->
@@ -26,8 +29,9 @@ router.post '/upload', (req, res) ->
     Upload.uploadUrl req.body.url, (err,result) ->
       res.json {md5: result.md5}
 
-router.post '/iif', (req,res,next) ->
-  
+router.post '/iiif', (req,res,next) ->
+  iiifHandler.handleRequest req, (err, response) ->
+    sendResponse(res,err,response)
 
 # Set up the routing for POST requests
 router.post '*', (req, res, next) ->
