@@ -3,13 +3,12 @@
 #
 
 # module requirements
-manifesto           = require 'manifesto.js'
 
 logger              = require '../logging/logger'
 QueueHandler        = require '../processingQueue/queueHandler'
 ExecutableHelper    = require '../helper/executableHelper'
 Statistics          = require '../statistics/statistics'
-
+IiifManifestParser  = require '../parsers/iiifManifestParser'
 
 #Expose postHandler
 iiifHandler = exports = module.exports = class IiifHandler
@@ -25,14 +24,8 @@ iiifHandler = exports = module.exports = class IiifHandler
 #   *req* the incoming request
   handleRequest: (req, cb) ->
     #print stats about the manifest
-    manifesto.loadManifest(req.body.iiif).then (manifest) ->
-      m = manifesto.create(manifest)
-      m.getSequences()
-      sequence = m.getSequenceByIndex(0)
-      canvases = sequence.getCanvases()
-      #logger.log 'info', "canvas: " + JSON.stringify(m.getCanvases())
-      #logger.log 'info', "canvases: " + canvases
-      return
-
+    iifManifestParser = new IiifManifestParser(req.body.iiif)
+    images = iifManifestParser.getAllImages(0)
+    logger.log 'images: ' + images
     cb null,{"ok"}
 
