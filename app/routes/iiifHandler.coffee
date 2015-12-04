@@ -25,7 +25,10 @@ iiifHandler = exports = module.exports = class IiifHandler
   handleRequest: (req, cb) ->
     #print stats about the manifest
     iifManifestParser = new IiifManifestParser(req.body.iiif)
-    images = iifManifestParser.getAllImages(0)
-    logger.log 'images: ' + images
-    cb null,{"ok"}
+    iifManifestParser.initialize().then ->
+      console.log 'hello'
+      images = iifManifestParser.getAllImages(0)
+      console.log images
+
+
 

@@ -1,13 +1,16 @@
 iifManifestParser = exports = module.exports = class IiifManifestParser
 
   manifesto = require 'manifesto.js'
-
+  q         = require 'q'
   constructor: (manifestUrl) ->
+    @manifestUrl = manifestUrl
+
+  initialize: () ->
     self = @
-    manifesto.loadManifest(manifestUrl).then (manifest) ->
-      self.manifest = manifesto.create(manifest)
+    manifesto.loadManifest(@manifestUrl).then (manifest) ->
+        self.manifest = manifesto.create(manifest)
       #already evaluate the sequences as we will need them anyways
-      self.manifest.getSequences()
+
 
   getAllImages: (seqIndex) ->
     images = []
