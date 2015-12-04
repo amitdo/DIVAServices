@@ -26,9 +26,18 @@ iiifHandler = exports = module.exports = class IiifHandler
     #print stats about the manifest
     iifManifestParser = new IiifManifestParser(req.body.iiif)
     iifManifestParser.initialize().then ->
-      console.log 'hello'
       images = iifManifestParser.getAllImages(0)
-      console.log images
+      metadata = iifManifestParser.getMetadata()
+      label = iifManifestParser.getLabel()
+      description = iifManifestParser.getDescription()
+
+      console.log 'metadata: ' + metadata
+      console.log 'label: ' + label
+      console.log 'description: ' + description
+      console.log 'license: ' + iifManifestParser.getLicense()
+      console.log 'attribution: ' + iifManifestParser.getAttribution()
+
+      cb null,{"ok": "ok"}
 
 
 

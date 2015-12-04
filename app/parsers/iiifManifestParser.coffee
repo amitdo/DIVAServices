@@ -20,3 +20,18 @@ iifManifestParser = exports = module.exports = class IiifManifestParser
       images.push(canvas.getImages()[0].getResource().id)
 
     return images
+
+  getMetadata: () ->
+    return @manifest.getMetadata()
+
+  getDescription: () ->
+    return @manifest.getDescription()
+
+  getLabel: () ->
+    return @manifest.getLabel()
+
+  getLicense: () ->
+    return @manifest.getLicense()
+
+  getAttribution: () ->
+    return @manifest.getAttribution()
